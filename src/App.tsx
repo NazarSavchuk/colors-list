@@ -1,5 +1,4 @@
 import React from "react";
-import DataItem from "./components/DataItem";
 import Home from "./pages/Home";
 
 function App() {

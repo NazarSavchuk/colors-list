@@ -1,35 +1,37 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { fetchColors } from "./asyncActions";
-import { Color, ColorSliceState, Status } from "./types";
+import { fetchColors } from "./asyncAction";
 
-const initialState: ColorSliceState = {
+const initialState: any = {
   items: [],
-  status: Status.LOADING,
+  status: "loading", //loading | success | error
 };
 
 const colorSlice = createSlice({
   name: "color",
   initialState,
   reducers: {
-    setItems(state, action: PayloadAction<Color[]>) {
+    setItems(state, action: PayloadAction<any>) {
       state.items = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchColors.pending, (state, action) => {
-      state.status = Status.LOADING;
+      state.status = "loading";
       state.items = [];
     });
+
     builder.addCase(fetchColors.fulfilled, (state, action) => {
       state.items = action.payload;
-      state.status = Status.SUCCESS;
+      state.status = "success";
     });
+
     builder.addCase(fetchColors.rejected, (state, action) => {
-      state.status = Status.ERROR;
+      state.status = "error";
       state.items = [];
     });
   },
 });
 
 export const { setItems } = colorSlice.actions;
+
 export default colorSlice.reducer;

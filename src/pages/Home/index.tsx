@@ -1,24 +1,39 @@
-import React, { useEffect } from "react";
-import { fetchColors } from "../../redux/colors/asyncActions";
-import { useAppDispatch } from "../../redux/store";
+import React from "react";
+import DataTable from "../../components/DataTable";
+import Pagination from "../../components/Pagination";
 
-const Home: React.FC = () => {
-  const dispatch = useAppDispatch;
-  const search = "0";
+import { TextField } from "@mui/material";
+import styles from "./Home.module.scss";
+
+const Home = () => {
+  const [searchId, setsearchId] = React.useState();
+
+  const handleChange = (e: any) => {
+    const regex = /^[0-9\b]+$/;
+    if (e.target.value === "" || regex.test(e.target.value)) {
+      setsearchId(e.target.value);
+    }
+  };
 
   React.useEffect(() => {
-    const getColors = (async function () {
-      dispatch(
-        fetchColors({
-          search,
-        })
-      );
-    })();
-
-    window.scrollTo(0, 0);
+    const params = new URLSearchParams();
+    // params.append();
   }, []);
-
-  return <div>Home</div>;
+  return (
+    <div className={styles.homePage}>
+      <div className={styles.textField}>
+        <TextField
+          label="Enter id"
+          color="secondary"
+          focused
+          type="text"
+          onChange={(e) => handleChange(e)}
+          value={searchId}
+        />
+      </div>
+      <DataTable />
+    </div>
+  );
 };
 
 export default Home;

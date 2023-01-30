@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import { useDispatch } from "react-redux";
 import color from "./colors/slice";
 
