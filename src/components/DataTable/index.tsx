@@ -4,6 +4,8 @@ import { fetchColors } from "../../redux/colors/asyncAction";
 import { selectColorData } from "../../redux/colors/selectors";
 import { useAppDispatch } from "../../redux/store";
 
+import { selectFilter } from "../../redux/filter/selectors";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,27 +27,41 @@ function createData(
 const DataTable = () => {
   const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectColorData);
+  const { searchId, page } = useSelector(selectFilter);
+
   const rows: any = [];
 
   if (status === "success") {
-    items.data.map((item: any) => {
+    if (items.data.length > 1) {
+      items.data.map((item: any) => {
+        rows.push(
+          createData(
+            item.id,
+            item.name,
+            item.year,
+            item.color,
+            item.pantone_value
+          )
+        );
+      });
+    } else {
       rows.push(
         createData(
-          item.id,
-          item.name,
-          item.year,
-          item.color,
-          item.pantone_value
+          items.data.id,
+          items.data.name,
+          items.data.year,
+          items.data.color,
+          items.data.pantone_value
         )
       );
-    });
+    }
   }
 
   React.useEffect(() => {
     const getColors = (async function () {
-      dispatch(fetchColors({ page: 3 }));
+      dispatch(fetchColors({ page: page, searchId: searchId }));
     })();
-  }, []);
+  }, [page, searchId]);
 
   return (
     <div>

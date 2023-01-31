@@ -1,0 +1,12 @@
+.currentPage {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  color: #3f51b5;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6rem;
+}
