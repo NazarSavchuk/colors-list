@@ -56,7 +56,9 @@
     ]
   },
   "devDependencies": {
+    "@types/dotenv-webpack": "^7.0.3",
     "@types/lodash.debounce": "^4.0.7",
-    "@types/node": "^18.11.18"
+    "@types/node": "^18.11.18",
+    "dotenv-webpack": "^8.0.1"
   }
 }

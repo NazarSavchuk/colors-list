@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { fetchColors } from "./asyncAction";
 
+import { FETCH_STATUS } from "./types";
+
 const initialState: any = {
   items: [],
-  status: "loading", //loading | success | error
+  status: FETCH_STATUS.LOADING, //loading | success | error
 };
 
 const colorSlice = createSlice({
@@ -16,17 +18,17 @@ const colorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchColors.pending, (state, action) => {
-      state.status = "loading";
+      state.status = FETCH_STATUS.LOADING;
       state.items = [];
     });
 
     builder.addCase(fetchColors.fulfilled, (state, action) => {
       state.items = action.payload;
-      state.status = "success";
+      state.status = FETCH_STATUS.SUCCESS;
     });
 
     builder.addCase(fetchColors.rejected, (state, action) => {
-      state.status = "error";
+      state.status = FETCH_STATUS.ERROR;
       state.items = [];
     });
   },

@@ -6,6 +6,10 @@ import { useAppDispatch } from "../../redux/store";
 
 import { selectFilter } from "../../redux/filter/selectors";
 
+import NotFoundItem from "../NotFoundItem";
+import VisiblePopup from "../VisiblePopup";
+import { VisiblePopupProps } from "../VisiblePopup";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -24,50 +28,66 @@ function createData(
   return { id, name, year, color, pantone_value };
 }
 
+type Row = {
+  id: number;
+  name: string;
+  year: number;
+  color: string;
+  pantone_value: string;
+};
+
 const DataTable = () => {
   const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectColorData);
+  const [isVisiblePopup, setIsVisiblePopup] = React.useState<boolean>(true);
+  const [popupProps, setPopupProps] = React.useState<Row>({
+    id: 1,
+    name: "name",
+    year: 2222,
+    color: "#000000",
+    pantone_value: "2r3",
+  });
   const { searchId, page } = useSelector(selectFilter);
 
-  const rows: any = [];
+  const rows: Row[] | Row = [];
+  let notFoundId = false;
 
   if (status === "success") {
-    if (items.data.length > 1) {
-      items.data.map((item: any) => {
+    const data = Array.isArray(items.data) ? items.data : Array.of(items.data);
+
+    if (data[0] !== undefined) {
+      data.forEach((elem: Row) => {
         rows.push(
           createData(
-            item.id,
-            item.name,
-            item.year,
-            item.color,
-            item.pantone_value
+            elem.id,
+            elem.name,
+            elem.year,
+            elem.color,
+            elem.pantone_value
           )
         );
       });
     } else {
-      rows.push(
-        createData(
-          items.data.id,
-          items.data.name,
-          items.data.year,
-          items.data.color,
-          items.data.pantone_value
-        )
-      );
+      notFoundId = true;
     }
   }
-
+  const props = {
+    setIsVisiblePopup,
+    props: popupProps,
+  };
   React.useEffect(() => {
     const getColors = (async function () {
-      dispatch(fetchColors({ page: page, searchId: searchId }));
+      dispatch(fetchColors({ page, searchId }));
     })();
   }, [page, searchId]);
 
   return (
     <div>
-      {status === "loading" && <>Loading</>}
-      {status === "success" && rows ? (
+      {notFoundId ? (
+        <NotFoundItem />
+      ) : (
         <>
+          <>{isVisiblePopup && <VisiblePopup {...props} />}</>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -80,11 +100,21 @@ const DataTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row: any) => (
+                {rows.map((row: Row) => (
                   <TableRow
                     key={row.name}
                     sx={{
                       backgroundColor: `${row.color}`,
+                    }}
+                    onClick={() => {
+                      setIsVisiblePopup(true);
+                      setPopupProps({
+                        id: row.id,
+                        name: row.name,
+                        year: row.year,
+                        color: row.color,
+                        pantone_value: row.pantone_value,
+                      });
                     }}>
                     <TableCell component="th" scope="row">
                       {row.id}
@@ -99,8 +129,6 @@ const DataTable = () => {
             </Table>
           </TableContainer>
         </>
-      ) : (
-        <>Error</>
       )}
     </div>
   );

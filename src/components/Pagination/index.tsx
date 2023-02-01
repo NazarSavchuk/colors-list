@@ -19,14 +19,14 @@ const Pagination = () => {
     <div className={styles.pagination}>
       <Button
         variant="contained"
-        disabled={page <= 1 ? true : false}
+        disabled={page <= 1 || !Array.isArray(items.data)}
         onClick={() => dispatch(setPage(page - 1))}>
         Prev
       </Button>
       <div className={styles.currentPage}> {page}</div>
       <Button
         variant="contained"
-        disabled={page >= items.total_pages ? true : false}
+        disabled={page >= items.total_pages || !Array.isArray(items.data)}
         onClick={() => dispatch(setPage(page + 1))}>
         Next
       </Button>
