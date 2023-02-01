@@ -17,6 +17,7 @@ const VisiblePopup: React.FC<VisiblePopupProps> = (params) => {
   return (
     <div className={styles.visiblePopup}>
       <CloseIcon
+        className={styles.closeIcon}
         onClick={() => {
           params.setIsVisiblePopup(false);
         }}

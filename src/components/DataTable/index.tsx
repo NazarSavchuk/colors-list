@@ -8,7 +8,6 @@ import { selectFilter } from "../../redux/filter/selectors";
 
 import NotFoundItem from "../NotFoundItem";
 import VisiblePopup from "../VisiblePopup";
-import { VisiblePopupProps } from "../VisiblePopup";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,6 +17,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
+import styles from "./DataTable.module.scss";
 function createData(
   id: number,
   name: string,
@@ -39,13 +39,13 @@ type Row = {
 const DataTable = () => {
   const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectColorData);
-  const [isVisiblePopup, setIsVisiblePopup] = React.useState<boolean>(true);
+  const [isVisiblePopup, setIsVisiblePopup] = React.useState<boolean>(false);
   const [popupProps, setPopupProps] = React.useState<Row>({
     id: 1,
-    name: "name",
+    name: "expamle",
     year: 2222,
     color: "#000000",
-    pantone_value: "2r3",
+    pantone_value: "example",
   });
   const { searchId, page } = useSelector(selectFilter);
 
@@ -102,6 +102,7 @@ const DataTable = () => {
               <TableBody>
                 {rows.map((row: Row) => (
                   <TableRow
+                    className={styles.tableRow}
                     key={row.name}
                     sx={{
                       backgroundColor: `${row.color}`,
