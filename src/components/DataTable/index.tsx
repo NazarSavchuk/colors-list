@@ -6,7 +6,6 @@ import { useAppDispatch } from "../../redux/store";
 
 import { selectFilter } from "../../redux/filter/selectors";
 
-import NotFoundItem from "../NotFoundItem";
 import VisiblePopup from "../VisiblePopup";
 
 import Table from "@mui/material/Table";
@@ -50,7 +49,6 @@ const DataTable = () => {
   const { searchId, page } = useSelector(selectFilter);
 
   const rows: Row[] | Row = [];
-  let notFoundId = false;
 
   if (status === "success") {
     const data = Array.isArray(items.data) ? items.data : Array.of(items.data);
@@ -67,8 +65,6 @@ const DataTable = () => {
           )
         );
       });
-    } else {
-      notFoundId = true;
     }
   }
   const props = {
@@ -79,58 +75,52 @@ const DataTable = () => {
     const getColors = (async function () {
       dispatch(fetchColors({ page, searchId }));
     })();
-  }, [page, searchId]);
+  }, [page, searchId, dispatch]);
 
   return (
     <div>
-      {notFoundId ? (
-        <NotFoundItem />
-      ) : (
-        <>
-          <>{isVisiblePopup && <VisiblePopup {...props} />}</>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell align="right">Name</TableCell>
-                  <TableCell align="right">Year</TableCell>
-                  <TableCell align="right">Color</TableCell>
-                  <TableCell align="right">Pantone_value</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row: Row) => (
-                  <TableRow
-                    className={styles.tableRow}
-                    key={row.name}
-                    sx={{
-                      backgroundColor: `${row.color}`,
-                    }}
-                    onClick={() => {
-                      setIsVisiblePopup(true);
-                      setPopupProps({
-                        id: row.id,
-                        name: row.name,
-                        year: row.year,
-                        color: row.color,
-                        pantone_value: row.pantone_value,
-                      });
-                    }}>
-                    <TableCell component="th" scope="row">
-                      {row.id}
-                    </TableCell>
-                    <TableCell align="right">{row.name}</TableCell>
-                    <TableCell align="right">{row.year}</TableCell>
-                    <TableCell align="right">{row.color}</TableCell>
-                    <TableCell align="right">{row.pantone_value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </>
-      )}
+      <>{isVisiblePopup && <VisiblePopup {...props} />}</>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="right">Name</TableCell>
+              <TableCell align="right">Year</TableCell>
+              <TableCell align="right">Color</TableCell>
+              <TableCell align="right">Pantone_value</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row: Row) => (
+              <TableRow
+                className={styles.tableRow}
+                key={row.name}
+                sx={{
+                  backgroundColor: `${row.color}`,
+                }}
+                onClick={() => {
+                  setIsVisiblePopup(true);
+                  setPopupProps({
+                    id: row.id,
+                    name: row.name,
+                    year: row.year,
+                    color: row.color,
+                    pantone_value: row.pantone_value,
+                  });
+                }}>
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell align="right">{row.name}</TableCell>
+                <TableCell align="right">{row.year}</TableCell>
+                <TableCell align="right">{row.color}</TableCell>
+                <TableCell align="right">{row.pantone_value}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

@@ -1,9 +1,15 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchColors } from "./asyncAction";
 
 import { FETCH_STATUS } from "./types";
+import { DataItem } from "./types";
 
-const initialState: any = {
+type InititalState = {
+  items: any;
+  status: FETCH_STATUS;
+};
+
+const initialState: InititalState = {
   items: [],
   status: FETCH_STATUS.LOADING, //loading | success | error
 };
@@ -17,7 +23,7 @@ const colorSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchColors.pending, (state, action) => {
+    builder.addCase(fetchColors.pending, (state) => {
       state.status = FETCH_STATUS.LOADING;
       state.items = [];
     });
@@ -27,7 +33,7 @@ const colorSlice = createSlice({
       state.status = FETCH_STATUS.SUCCESS;
     });
 
-    builder.addCase(fetchColors.rejected, (state, action) => {
+    builder.addCase(fetchColors.rejected, (state) => {
       state.status = FETCH_STATUS.ERROR;
       state.items = [];
     });
