@@ -8,7 +8,11 @@ export type DataType = {
   per_page: number;
   total: number;
   total_pages: number;
-  data: DataItem[] | DataItem;
+  data: DataItem[] | DataItem | [];
+  support: {
+    url: string;
+    text: string;
+  };
 };
 
 export type DataItem = {

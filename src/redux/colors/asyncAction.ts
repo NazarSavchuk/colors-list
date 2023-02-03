@@ -3,7 +3,7 @@ import axios from "axios";
 import { DataType } from "./types";
 
 export const fetchColors = createAsyncThunk<
-  DataType | {},
+  DataType,
   { page: number; searchId: number }
 >(
   "color/fetchColorsStatus",

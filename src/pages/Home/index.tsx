@@ -21,7 +21,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
 
   const { searchId, page } = useSelector(selectFilter);
-  const { items, status } = useSelector(selectColorData);
+  const { itemsData, status } = useSelector(selectColorData);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -56,7 +56,7 @@ const Home = () => {
   if (status === "error") {
     return <Error />;
   } else {
-    if (!items) {
+    if (!itemsData) {
       return <>Loading</>;
     } else {
       return (

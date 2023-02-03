@@ -11,7 +11,7 @@ const Error = () => {
   return (
     <div className={styles.error}>
       <div className={styles.errorMessage}>
-        Error <ErrorOutlineIcon fontSize="large" />
+        Error, not found <ErrorOutlineIcon fontSize="large" />
       </div>
       <Button
         variant="contained"

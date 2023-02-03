@@ -37,7 +37,7 @@ type Row = {
 
 const DataTable = () => {
   const dispatch = useAppDispatch();
-  const { items, status } = useSelector(selectColorData);
+  const { itemsData, status } = useSelector(selectColorData);
   const [isVisiblePopup, setIsVisiblePopup] = React.useState<boolean>(false);
   const [popupProps, setPopupProps] = React.useState<Row>({
     id: 1,
@@ -50,8 +50,11 @@ const DataTable = () => {
 
   const rows: Row[] | Row = [];
 
-  if (status === "success") {
-    const data = Array.isArray(items.data) ? items.data : Array.of(items.data);
+  if (status === "success" && itemsData.data) {
+    console.log(itemsData);
+    const data = Array.isArray(itemsData.data)
+      ? itemsData.data
+      : Array.of(itemsData.data);
 
     if (data[0] !== undefined) {
       data.forEach((elem: Row) => {
