@@ -26,9 +26,9 @@ const Home = () => {
   React.useEffect(() => {
     setTimeout(() => {
       if (searchParams.get("page") === null) {
-        setSearchParams({ page: page });
+        setSearchParams({ page: page.toString() });
       } else {
-        if (searchParams.get("page") !== page) {
+        if (searchParams.get("page") !== page.toString()) {
           dispatch(setPage(Number(searchParams.get("page"))));
         }
       }
@@ -40,16 +40,16 @@ const Home = () => {
   }, []);
 
   React.useEffect(() => {
-    if (searchParams.get("page") !== page) {
-      setSearchParams({ page: page });
+    if (searchParams.get("page") !== page.toString()) {
+      setSearchParams({ page: page.toString() });
     }
   }, [page]);
 
   React.useEffect(() => {
     if (searchId) {
-      setSearchParams({ id: searchId });
+      setSearchParams({ id: searchId.toString() });
     } else {
-      setSearchParams({ page });
+      setSearchParams({ page: page.toString() });
     }
   }, [searchId]);
 

@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: any = {
-  searchId: "",
+interface InitialStateFilterI {
+  searchId: number;
+  page: number;
+}
+
+const initialState: InitialStateFilterI = {
+  searchId: NaN,
   page: 1,
 };
 
